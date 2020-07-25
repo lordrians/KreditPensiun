@@ -104,6 +104,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/hint_content"
                     android:hint="@string/hint_notlp"
+                    android:inputType="number"
                     android:textColor="@color/black"/>
 
                 <Button

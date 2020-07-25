@@ -1,6 +1,7 @@
 package com.example.kreditpensiun;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Sales sales = salesArrayList.get(position);
+        sales.setPosition(position);
 
         holder.tvNama.setText(sales.getNama());
         holder.tvNoTlp.setText(sales.getNo_tlp()+"");
@@ -49,6 +51,13 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.ViewHolder> 
                 .load(Api.BASE + "img/" + sales.getPhoto())
                 .apply(new RequestOptions().fitCenter())
                 .into(holder.ivPhoto);
+
+        holder.itemLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(mContext, DetailActivity.class);
+            intent.putExtra("sales", sales);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        });
 
     }
 

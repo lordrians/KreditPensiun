@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Sales> salesArrayList;
     private FloatingActionButton fab_add;
     private SalesAdapter salesAdapter;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         rvSales = findViewById(R.id.rv_sales);
         fab_add = findViewById(R.id.fab_add);
+
+        dialog = new ProgressDialog(this);
+        dialog.setCancelable(false);
 
         salesArrayList = new ArrayList<>();
         rvSales.setHasFixedSize(true);
@@ -56,37 +61,42 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadData() {
 
-//        StringRequest request = new StringRequest(StringRequest.Method.POST, Api.SHOW_ITEM, response -> {
-//            try {
-//                JSONArray salesArr = new JSONArray(response);
-//
-//                for (int i = 0; i < salesArr.length(); i++){
-//                    JSONObject object = salesArr.getJSONObject(i);
-//
-//                    Sales sales = new Sales();
-//                    sales.setId(object.getInt("id"));
-//                    sales.setNik(object.getString("nik"));
-//                    sales.setNo_tlp(object.getString("no_tlp"));
-//                    sales.setGaji(object.getLong("gaji"));
-//                    sales.setNama(object.getString("nama"));
-//                    sales.setAlamat(object.getString("alamat"));
-//                    sales.setStatus(object.getString("status"));
-//                    sales.setPembayaran(object.getString("pembayaran"));
-//                    sales.setRespon(object.getString("respon"));
-//                    sales.setPhoto(object.getString("photo"));
-//                    salesArrayList.add(sales);
-//                }
-//                salesAdapter = new SalesAdapter(getApplicationContext(),salesArrayList);
-//                rvSales.setAdapter(salesAdapter);
-//
-//
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        },error -> {
-//            error.printStackTrace();
-//        });
-//        Volley.newRequestQueue(getApplicationContext()).add(request);
+        dialog.setMessage("Loading...");
+        dialog.show();
+        StringRequest request = new StringRequest(StringRequest.Method.POST, Api.SHOW_ITEM, response -> {
+            try {
+                JSONArray salesArr = new JSONArray(response);
+
+                for (int i = 0; i < salesArr.length(); i++){
+                    JSONObject object = salesArr.getJSONObject(i);
+
+                    Sales sales = new Sales();
+                    sales.setId(object.getInt("id"));
+                    sales.setNik(object.getString("nik"));
+                    sales.setNo_tlp(object.getString("no_tlp"));
+                    sales.setTgl_lahir(object.getString("tgl_lahir"));
+                    sales.setGaji(object.getLong("gaji"));
+                    sales.setNama(object.getString("nama"));
+                    sales.setAlamat(object.getString("alamat"));
+                    sales.setStatus(object.getString("status"));
+                    sales.setPembayaran(object.getString("pembayaran"));
+                    sales.setRespon(object.getString("respon"));
+                    sales.setPhoto(object.getString("photo"));
+                    salesArrayList.add(sales);
+                }
+                salesAdapter = new SalesAdapter(getApplicationContext(),salesArrayList);
+                rvSales.setAdapter(salesAdapter);
+                dialog.dismiss();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                dialog.dismiss();
+            }
+        },error -> {
+            error.printStackTrace();
+            dialog.dismiss();
+        });
+        Volley.newRequestQueue(getApplicationContext()).add(request);
     }
 
     @Override

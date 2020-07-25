@@ -43,6 +43,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -93,9 +94,19 @@ public class CreateSalesActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        etTglLahir.setFocusable(false);
+        etTglLahir.setFocusableInTouchMode(true);
+        etTglLahir.setClickable(true);
+        etTglLahir.setOnClickListener(v -> datePick());
         ivPhoto.setOnClickListener(v -> pickImage());
         btnOtp.setOnClickListener(v -> sendVerificationCodeToUser(etNotlp.getText().toString()));
         btnSimpan.setOnClickListener(v -> create());
+    }
+
+    private void datePick() {
+        int mYear, mMonth, mDay;
+        final Calendar calendar = Calendar.getInstance();
+        mYear = calendar.get(Calendar.Y)
     }
 
     private void pickImage() {
@@ -114,9 +125,10 @@ public class CreateSalesActivity extends AppCompatActivity {
                 if (imageURI != null) {
                     photo = Bitmap.createScaledBitmap(photo, 200, 200, true);
                     imageString = bitmapToString(photo);
+
+                    Toast.makeText(this,imageString, Toast.LENGTH_SHORT).show();
                 }
                 ivPhoto.setImageBitmap(photo);
-//                Toast.makeText(this, imageURI.toString(), Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -157,7 +169,7 @@ public class CreateSalesActivity extends AppCompatActivity {
                     sales.setGaji(salesObj.getLong("gaji"));
                     sales.setPembayaran(salesObj.getString("pembayaran"));
                     sales.setRespon(salesObj.getString("respon"));
-//                    sales.setPhoto(salesObj.getString("photo"));
+                    sales.setPhoto(salesObj.getString("photo"));
 
                     MainActivity.salesArrayList.add(sales);
                     MainActivity.rvSales.getAdapter().notifyDataSetChanged();
@@ -179,6 +191,7 @@ public class CreateSalesActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("nik",etNik.getText().toString());
+                map.put("position",etNama.getText().toString());
                 map.put("nama",etNama.getText().toString());
                 map.put("tgl_lahir",etTglLahir.getText().toString());
                 map.put("alamat",etAlamat.getText().toString());

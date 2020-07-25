@@ -4,11 +4,19 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Sales implements Parcelable {
-    int id;
+    int id,position;
     private long  gaji;
     private String photo, nama, alamat, tgl_lahir, status, pembayaran, respon, no_tlp,nik;
 
     public Sales() {
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public int getId() {
@@ -106,6 +114,7 @@ public class Sales implements Parcelable {
     protected Sales(Parcel in) {
         nik = in.readString();
         id = in.readInt();
+        position = in.readInt();
         no_tlp = in.readString();
         gaji = in.readLong();
         photo = in.readString();
@@ -138,6 +147,7 @@ public class Sales implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(nik);
         dest.writeInt(id);
+        dest.writeInt(position);
         dest.writeString(no_tlp);
         dest.writeLong(gaji);
         dest.writeString(photo);
