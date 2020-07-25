@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">KreditPensiun</string>
+    <string name="today">Today</string>
+    <string name="kunjungansaya">Kunjungan Saya</string>
+    <string name="nik">NIK</string>
+    <string name="hint_nik">327xxxxxxx</string>
+    <string name="hint_date">01/01/2000</string>
+    <string name="aktif_bekerja">Aktif Bekerja</string>
+    <string name="pensiun">Pensiun</string>
+    <string name="update">Update</string>
+    <string name="name">Nama</string>
+    <string name="hint_nama">Budi</string>
+    <string name="tanggal_lahir">Tanggal Lahir</string>
+    <string name="alamat">Alamat</string>
+    <string name="hint_alamat">Jl. xxx</string>
+    <string name="hint_notlp">0812xxxxxxxx</string>
+    <string name="no_tlp">No. Telepon</string>
+    <string name="status_kepegawaian">Status Kepegawaian</string>
+    <string name="gaji">Gaji Aktif/Pensiun</string>
+    <string name="pembayaran">Pembayaran Gaji Dengan Bank</string>
+    <string name="hint_gaji">Rp. 4.000.000</string>
+    <string name="sales_respon">Sales Response</string>
+    <string name="hint_response">Rencana Meminjam .....</string>
+    <string name="delete">Delete</string>
+    <string name="kirim_kode_otp">Kirim kode OTP</string>
+    <string name="kode_otp">Kode OTP</string>
+    <string name="detik">00.00 detik tersisa</string>
+    <string name="hint_kode">xxxx</string>
+    <string name="simpan">SIMPAn</string>
+    <string name="apakah_anda_yakin">Apakah anda yakin telah mengedit data dengan benar?</string>
+    <string name="edit_content">Setiap data yang anda edit akan kami simpan dan mengubahnya di data kantor pusat. Perhatikan kembali data-data yang anda inputkan</string>
+    <string name="mengedit_lagi">Mengedit Lagi</string>
+    <string name="mengedit_simpan">Simpan Data</string>
+
+    <string-array name="list_bank">
+        <item>BNI</item>
+        <item>BCA</item>
+        <item>BRI</item>
+        <item>MANDIRI</item>
+    </string-array>
+</resources>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "386820493421",
+    "firebase_url": "https://kreditpensiun-57af7.firebaseio.com",
+    "project_id": "kreditpensiun-57af7",
+    "storage_bucket": "kreditpensiun-57af7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386820493421:android:04d7cac3466a81f252ef64",
+        "android_client_info": {
+          "package_name": "com.example.kreditpensiun"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "386820493421-lsdp47h8ttgfksqqudk587ks7m0np2ck.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kreditpensiun",
+            "certificate_hash": "895175030f4ff938afd37d88b190633d38a9e5c0"
+          }
+        },
+        {
+          "client_id": "386820493421-8to6qkrdpcc2j972r8jf629063ls8189.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0-VcetbhwcWNPs_85c0zZeXlC8ZjiKn4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "386820493421-8to6qkrdpcc2j972r8jf629063ls8189.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

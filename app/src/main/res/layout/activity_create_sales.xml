@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateSalesActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/container_start"
+            android:layout_marginEnd="@dimen/container_end">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_create_photo"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:src="@color/grey"
+                android:layout_gravity="center"
+                android:layout_marginTop="56dp"/>
+
+            <TextView
+                android:layout_marginTop="@dimen/container_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/nik"
+                android:textSize="@dimen/title_hint"/>
+
+            <EditText
+                android:id="@+id/et_create_nik"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/hint_content"
+                android:hint="@string/hint_nik"
+                android:inputType="number"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_marginTop="@dimen/container_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/name"
+                android:textSize="@dimen/title_hint"/>
+
+            <EditText
+                android:id="@+id/et_create_nama"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/hint_content"
+                android:hint="@string/hint_nama"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_marginTop="@dimen/container_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tanggal_lahir"
+                android:textSize="@dimen/title_hint"/>
+
+            <EditText
+                android:id="@+id/et_create_tgl_lahir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:hint="@string/hint_date"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_marginTop="@dimen/container_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/alamat"
+                android:textSize="@dimen/title_hint"/>
+
+            <EditText
+                android:id="@+id/et_create_alamat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/hint_content"
+                android:hint="@string/hint_alamat"
+                android:textColor="@color/black"/>
+            <TextView
+                android:layout_marginTop="@dimen/container_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_tlp"
+                android:textSize="@dimen/title_hint"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_create_notlp"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/hint_content"
+                    android:hint="@string/hint_notlp"
+                    android:textColor="@color/black"/>
+
+                <Button
+                    android:id="@+id/btn_kirim_kode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/kirim_kode_otp"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="@dimen/container_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/kode_otp"
+                android:textSize="@dimen/title_hint"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_create_otp"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/hint_content"
+                    android:hint="@string/hint_kode"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/et_create_detik"
+                    android:layout_marginStart="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/detik"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+
+
+            <TextView
+                android:layout_marginTop="@dimen/container_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/status_kepegawaian"
+                android:textSize="@dimen/title_hint"/>
+
+            <RadioGroup
+                android:id="@+id/rg_create_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="horizontal">-->
+                    <RadioButton
+                        android:id="@+id/rb_create_aktif"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/radio_button"
+                        android:text="@string/aktif_bekerja"/>
+
+                    <RadioButton
+                        android:id="@+id/rb_create_pensiun"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/radio_button"
+                        android:text="@string/pensiun"/>
+<!--                </LinearLayout>-->
+            </RadioGroup>
+
+            <TextView
+                android:layout_marginTop="@dimen/container_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/gaji"
+                android:textSize="@dimen/title_hint"/>
+
+            <EditText
+                android:id="@+id/et_create_gaji"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/hint_content"
+                android:hint="@string/hint_gaji"
+                android:textColor="@color/black"
+                android:inputType="number"/>
+
+            <TextView
+                android:layout_marginTop="@dimen/container_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pembayaran"
+                android:textSize="@dimen/title_hint"/>
+
+            <Spinner
+                android:id="@+id/spin_create_gaji"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/list_bank"/>
+
+            <TextView
+                android:layout_marginTop="@dimen/container_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sales_respon"
+                android:textSize="@dimen/title_hint"/>
+
+            <EditText
+                android:id="@+id/et_create_respon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/hint_content"
+                android:hint="@string/hint_response"
+                android:textColor="@color/black"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/container_top"
+                android:layout_marginBottom="@dimen/bottom_btn">
+
+                <Button
+                    android:id="@+id/btn_create_simpan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/simpan"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

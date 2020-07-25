@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_hint">12sp</dimen>
+    <dimen name="hint_content">16sp</dimen>
+    <dimen name="container_top">16dp</dimen>
+    <dimen name="container_start">16dp</dimen>
+    <dimen name="container_end">16dp</dimen>
+    <dimen name="radio_button">16sp</dimen>
+    <dimen name="button">16sp</dimen>
+    <dimen name="pad_btn_left">24</dimen>
+    <dimen name="pad_btn_right">24dp</dimen>
+    <dimen name="pad_btn_top">16dp</dimen>
+    <dimen name="pad_btn_bottom">16dp</dimen>
+    <dimen name="radius_button">12dp</dimen>
+    <dimen name="bottom_btn">32dp</dimen>
+    <dimen name="title_popup">18sp</dimen>
+    <dimen name="content_popup">16sp</dimen>
+</resources>
