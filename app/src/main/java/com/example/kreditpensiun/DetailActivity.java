@@ -11,6 +11,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -32,8 +34,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -86,12 +91,55 @@ public class DetailActivity extends AppCompatActivity {
 
         fillingView();
 
+        etGaji.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                etGaji.removeTextChangedListener(this);
+
+
+                etGaji.setText(rupiahFormat(s.toString()));
+                etGaji.setSelection(etGaji.getText().length());
+
+
+                etGaji.addTextChangedListener(this);
+            }
+        });
+
         etTgl.setOnClickListener(v -> datePicker());
         ivPhoto.setOnClickListener(v -> pickImage());
         btnDelete.setOnClickListener(v -> deleteData());
         btnUpdate.setOnClickListener(v -> updateData());
 
 
+
+    }
+
+    public static String rupiahFormat(String original){
+
+        if (!original.equals("")){
+            long longNumber;
+            if (original.contains(",")){
+                original = original.replaceAll(",","");
+            }
+
+            longNumber = Long.parseLong(original);
+
+            DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+            formatter.applyPattern("#,###");
+            return formatter.format(longNumber);
+
+        }
+        return original;
 
     }
 
@@ -145,6 +193,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void updateData() {
+        String gaji = etGaji.getText().toString();
         dialog.setMessage("Loading...");
         dialog.show();
         StringRequest request = new StringRequest(StringRequest.Method.POST, Api.UPDATE_ITEM, response -> {
@@ -165,16 +214,23 @@ public class DetailActivity extends AppCompatActivity {
                     sales.setRespon(salesObj.getString("respon"));
                     sales.setPhoto(salesObj.getString("photo"));
 
+                    Toast.makeText(this, "Sukses", Toast.LENGTH_SHORT).show();
                     MainActivity.salesArrayList.set(paketSales.getPosition(), sales);
                     MainActivity.rvSales.getAdapter().notifyDataSetChanged();
                     finish();
                     dialog.dismiss();
+                } else {
+                    String error = object.getString("data");
+                    Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                Toast.makeText(this, "A", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         },error -> {
+            error.printStackTrace();
+            Toast.makeText(this, "b", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
         }){
             @Override
@@ -186,7 +242,7 @@ public class DetailActivity extends AppCompatActivity {
                 map.put("tgl_lahir",etTgl.getText().toString());
                 map.put("no_tlp",etNotlp.getText().toString());
                 map.put("alamat",etAlamat.getText().toString());
-                map.put("gaji",etGaji.getText().toString());
+                map.put("gaji",gaji.replaceAll(",",""));
                 map.put("pembayaran",spinPembayaran.getSelectedItem().toString());
                 map.put("status",getStatus());
                 map.put("respon",etRespon.getText().toString());
@@ -197,7 +253,6 @@ public class DetailActivity extends AppCompatActivity {
 
             }
         };
-        Toast.makeText(this, imageString, Toast.LENGTH_SHORT).show();
         Volley.newRequestQueue(getApplicationContext()).add(request);
     }
 
@@ -247,7 +302,7 @@ public class DetailActivity extends AppCompatActivity {
         etAlamat.setText(paketSales.getAlamat());
         etNotlp.setText(paketSales.getNo_tlp());
         etNotlp.setEnabled(false);
-        etGaji.setText(String.valueOf(paketSales.getGaji()));
+        etGaji.setText(rupiahFormat(String.valueOf(paketSales.getGaji())));
         etRespon.setText(paketSales.getRespon());
 
         //Spinner

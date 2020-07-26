@@ -129,20 +129,24 @@ public class CreateSalesActivity extends AppCompatActivity {
                 etGaji.removeTextChangedListener(this);
 
                 String original = s.toString();
-                long longNumber;
-                if (original.contains(",")){
-                    original = original.replaceAll(",","");
+                if (!original.equals("")){
+                    long longNumber;
+                    if (original.contains(",")){
+                        original = original.replaceAll(",","");
+                    }
+
+                    longNumber = Long.parseLong(original);
+
+                    DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+                    formatter.applyPattern("#,###");
+                    String formattedString = formatter.format(longNumber);
+
+                    etGaji.setText(formattedString);
+                    etGaji.setSelection(etGaji.getText().length());
                 }
 
-                longNumber = Long.parseLong(original);
-
-                DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
-                formatter.applyPattern("#,###,###,###");
-                String formattedString = formatter.format(longNumber);
-
-                etGaji.setText(formattedString);
-                etGaji.setSelection(etGaji.getText().length());
                 etGaji.addTextChangedListener(this);
+
             }
         });
         kodeOtp.addTextChangedListener(new TextWatcher() {
@@ -237,6 +241,7 @@ public class CreateSalesActivity extends AppCompatActivity {
 
     private void create() {
         String status = spinBank.getSelectedItem().toString();
+        String gaji = etGaji.getText().toString();
 
         dialog.setMessage("Loading...");
         dialog.show();
@@ -252,6 +257,7 @@ public class CreateSalesActivity extends AppCompatActivity {
                     sales.setNik(salesObj.getString("nik"));
                     sales.setNama(salesObj.getString("nama"));
                     sales.setTgl_lahir(salesObj.getString("tgl_lahir"));
+                    sales.setNo_tlp(salesObj.getString("no_tlp"));
                     sales.setAlamat(salesObj.getString("alamat"));
                     sales.setStatus(salesObj.getString("status"));
                     sales.setGaji(salesObj.getLong("gaji"));
@@ -285,7 +291,7 @@ public class CreateSalesActivity extends AppCompatActivity {
                 map.put("alamat",etAlamat.getText().toString());
                 map.put("no_tlp",etNotlp.getText().toString());
                 map.put("status",getStatus());
-                map.put("gaji",etGaji.getText().toString());
+                map.put("gaji",gaji.replaceAll(",",""));
                 map.put("pembayaran",status);
                 map.put("respon",etRespon.getText().toString());
                 map.put("photo", bitmapToString(photo));
