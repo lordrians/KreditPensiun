@@ -3,6 +3,7 @@ package com.example.kreditpensiun;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -31,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -75,17 +77,36 @@ public class DetailActivity extends AppCompatActivity {
         btnDelete = findViewById(R.id.btn_detail_delete);
         btnUpdate = findViewById(R.id.btn_detail_update);
 
+        etTgl.setFocusable(false);
+        etTgl.setFocusableInTouchMode(false);
+        etTgl.setClickable(true);
+
         dialog = new ProgressDialog(this);
         dialog.setCancelable(false);
 
         fillingView();
 
+        etTgl.setOnClickListener(v -> datePicker());
         ivPhoto.setOnClickListener(v -> pickImage());
         btnDelete.setOnClickListener(v -> deleteData());
         btnUpdate.setOnClickListener(v -> updateData());
 
 
 
+    }
+
+    private void datePicker() {
+        int mYear, mMonth, mDay;
+        final Calendar calendar = Calendar.getInstance();
+        mYear = calendar.get(Calendar.YEAR);
+        mMonth = calendar.get(Calendar.MONTH);
+        mDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                (view, year, month, dayOfMonth) -> {
+                    etTgl.setText(dayOfMonth + "/"+ (month + 1) + "/" + year);
+                }, mYear, mMonth, mDay);
+        datePickerDialog.show();
     }
 
     private void pickImage() {
@@ -183,10 +204,10 @@ public class DetailActivity extends AppCompatActivity {
     private void deleteData() {
         dialog.setMessage("Loading...");
         dialog.show();
-        StringRequest request = new StringRequest(StringRequest.Method.POST, Api.UPDATE_ITEM, response -> {
-            MainActivity.salesArrayList.remove(paketSales.getId());
-            MainActivity.rvSales.getAdapter().notifyItemRemoved(paketSales.getId());
-            MainActivity.rvSales.getAdapter().notifyItemRangeChanged(paketSales.getId(), MainActivity.salesArrayList.size());
+        StringRequest request = new StringRequest(StringRequest.Method.POST, Api.DELETE_ITEM, response -> {
+            MainActivity.salesArrayList.remove(paketSales.getPosition());
+            MainActivity.rvSales.getAdapter().notifyItemRemoved(paketSales.getPosition());
+            MainActivity.rvSales.getAdapter().notifyItemRangeChanged(paketSales.getPosition(), MainActivity.salesArrayList.size());
             finish();
             dialog.dismiss();
         },error -> {
@@ -197,6 +218,7 @@ public class DetailActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> map = new HashMap<>();
                 map.put("id", paketSales.getId()+"");
+                map.put("photo", paketSales.getPhoto());
                 return map;
             }
         };
@@ -224,6 +246,7 @@ public class DetailActivity extends AppCompatActivity {
         etTgl.setText(paketSales.getTgl_lahir());
         etAlamat.setText(paketSales.getAlamat());
         etNotlp.setText(paketSales.getNo_tlp());
+        etNotlp.setEnabled(false);
         etGaji.setText(String.valueOf(paketSales.getGaji()));
         etRespon.setText(paketSales.getRespon());
 

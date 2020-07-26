@@ -2,24 +2,33 @@ package com.example.kreditpensiun;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.arch.core.executor.TaskExecutor;
 
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.provider.MediaStore;
 import android.telephony.PhoneNumberUtils;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -43,8 +52,11 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -52,6 +64,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CreateSalesActivity extends AppCompatActivity {
     private CircleImageView ivPhoto;
+    private CountDownTimer timer;
+    private TextView tvTimer;
     private EditText etNik, etNama, etTglLahir, etAlamat, etNotlp, etGaji, etRespon, kodeOtp;
     private RadioGroup rgStatus;
     private RadioButton rbAktif, rbPensiun;
@@ -88,6 +102,7 @@ public class CreateSalesActivity extends AppCompatActivity {
         spinBank = findViewById(R.id.spin_create_gaji);
         btnOtp = findViewById(R.id.btn_kirim_kode);
         btnSimpan = findViewById(R.id.btn_create_simpan);
+        tvTimer = findViewById(R.id.et_create_detik);
 
         dialog = new ProgressDialog(this);
         dialog.setCancelable(false);
@@ -95,18 +110,91 @@ public class CreateSalesActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         etTglLahir.setFocusable(false);
-        etTglLahir.setFocusableInTouchMode(true);
+        etTglLahir.setFocusableInTouchMode(false);
         etTglLahir.setClickable(true);
+
+        etGaji.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                etGaji.removeTextChangedListener(this);
+
+                String original = s.toString();
+                long longNumber;
+                if (original.contains(",")){
+                    original = original.replaceAll(",","");
+                }
+
+                longNumber = Long.parseLong(original);
+
+                DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+                formatter.applyPattern("#,###,###,###");
+                String formattedString = formatter.format(longNumber);
+
+                etGaji.setText(formattedString);
+                etGaji.setSelection(etGaji.getText().length());
+                etGaji.addTextChangedListener(this);
+            }
+        });
+        kodeOtp.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                cekKode(s.toString());
+            }
+        });
         etTglLahir.setOnClickListener(v -> datePick());
         ivPhoto.setOnClickListener(v -> pickImage());
-        btnOtp.setOnClickListener(v -> sendVerificationCodeToUser(etNotlp.getText().toString()));
+        btnOtp.setOnClickListener(v -> {
+            timer = new CountDownTimer(60*1000,1000) {
+                @SuppressLint("DefaultLocale")
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    tvTimer.setText(String.format("%02d:%02d", (millisUntilFinished/1000)%3600/60, (millisUntilFinished/1000)%60));
+                }
+
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onFinish() {
+                    tvTimer.setText("please resend code");
+                    timer.cancel();
+                }
+            }.start();
+            sendVerificationCodeToUser(etNotlp.getText().toString());
+        });
         btnSimpan.setOnClickListener(v -> create());
     }
 
     private void datePick() {
         int mYear, mMonth, mDay;
         final Calendar calendar = Calendar.getInstance();
-        mYear = calendar.get(Calendar.Y)
+        mYear = calendar.get(Calendar.YEAR);
+        mMonth = calendar.get(Calendar.MONTH);
+        mDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                (view, year, month, dayOfMonth) -> {
+                    etTglLahir.setText(dayOfMonth + "/"+ (month + 1) + "/" + year);
+                }, mYear, mMonth, mDay);
+        datePickerDialog.show();
     }
 
     private void pickImage() {
@@ -220,8 +308,8 @@ public class CreateSalesActivity extends AppCompatActivity {
         return selectedtext;
     }
 
-    private void cekKode() {
-        String codeVer = kodeOtp.getText().toString();
+    private void cekKode(String codeVer) {
+//        String codeVer = kodeOtp.getText().toString();
 
         if (codeVer.isEmpty() || codeVer.length() < 6){
             kodeOtp.setError("Wrong OTP");
@@ -264,7 +352,8 @@ public class CreateSalesActivity extends AppCompatActivity {
             String code = phoneAuthCredential.getSmsCode();
             if (code!= null){
 //                kodeOtp.setText(code);
-                verifyCode(code);
+//                signInByCredential(phoneAuthCredential);
+                kodeOtp.setText(code);
             }
         }
 
@@ -279,17 +368,25 @@ public class CreateSalesActivity extends AppCompatActivity {
     private void verifyCode(String code) {
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(VerificationCodeBySystem,code);
         signInByCredential(credential);
-        kodeOtp.setText(code);
     }
 
     private void signInByCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(CreateSalesActivity.this, new OnCompleteListener<AuthResult>() {
+                    @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
+                            kodeOtp.setFocusableInTouchMode(false);
+                            kodeOtp.setFocusable(false);
+                            kodeOtp.setEnabled(false);
+                            timer.cancel();
+                            tvTimer.setText("Verified");
+                            tvTimer.setTextColor(getColor(R.color.colorPrimary));
                             Toast.makeText(CreateSalesActivity.this, "Sukses Verifikasi", Toast.LENGTH_SHORT).show();
                         } else {
+                            timer.cancel();
+                            tvTimer.setText("resend your code");
                             Toast.makeText(CreateSalesActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
